@@ -40,9 +40,9 @@ def post_detail(request, post_id):
     """Описание записи в блоге"""
     template = 'blog/detail.html'
     post = get_object_or_404(some_posts(Post.objects), pk=post_id)
-    if request.user != posts.author:
-        posts = get_object_or_404(get_posts(Post.objects), id=post_id)
-    comments = posts.comments.order_by('created_at')
+    if request.user != post.author:
+        post = get_object_or_404(some_posts(Post.objects), id=post_id)
+    comments = post.comments.order_by('created_at')
     form = CommentForm()
     context = {'post': post, 'form': form, 'comments': comments}
     return render(request, template, context)
@@ -64,7 +64,7 @@ def category_posts(request, category_slug):
 
 @login_required
 def create_post(request):
-    """Создает новую запись."""
+    """Создать новую запись."""
     template = 'blog/create.html'
     if request.method == 'POST':
         form = PostForm(request.POST or None, files=request.FILES or None)

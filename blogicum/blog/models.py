@@ -49,7 +49,7 @@ class Location(PublishedModel):
 
 class Post(PublishedModel):
     title = models.CharField(
-        verbose_name='Название',
+        verbose_name='Заголовок',
         max_length=256
     )
     text = models.TextField('Текст')
@@ -92,7 +92,8 @@ class Post(PublishedModel):
         ordering = ['-pub_date']
 
     def __str__(self) -> str:
-        return self.title
+        title = str(self.title)
+        return title
 
 
 class Comment(PublishedModel):

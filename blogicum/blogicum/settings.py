@@ -33,8 +33,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_bootstrap5',
     'debug_toolbar',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +47,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -125,15 +126,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR / 'static'),
+    BASE_DIR / "static",
 ]
 
 
 # Media
-
-
 MEDIA_URL = '/media/'
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
