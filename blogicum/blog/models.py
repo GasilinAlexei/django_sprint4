@@ -1,6 +1,6 @@
+from django.db import models
 from django.contrib.auth import get_user_model
 
-from django.db import models
 from core.models import PublishedModel
 
 
@@ -94,6 +94,16 @@ class Post(PublishedModel):
     def __str__(self) -> str:
         title = str(self.title)
         return title
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    email = models.EmailField()
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 class Comment(PublishedModel):
