@@ -77,6 +77,7 @@ def create_post(request):
     return render(request, template, context)
 
 
+login_required
 def profile(request, username):
     """Возвращает профиль пользователя."""
     template = 'blog/profile.html'
