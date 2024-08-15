@@ -8,9 +8,6 @@ from .models import Post, Category, Comment, User
 from .forms import PostForm, ProfileEditForm, CommentForm
 
 
-NUM_POSTS_INDEX = 5
-
-
 def some_posts(post_objects):
     """Посты из БД"""
     return post_objects.filter(
@@ -30,21 +27,22 @@ def get_paginator(request, items, num=10):
 def index(request):
     """Главная страница"""
     template = 'blog/index.html'
-    post_list = some_posts(Post.objects)[:NUM_POSTS_INDEX]
+    post_list = some_posts(Post.objects).order_by('-pub_date')
     page_obj = get_paginator(request, post_list)
     context = {'page_obj': page_obj}
     return render(request, template, context)
 
 
+@login_required
 def post_detail(request, post_id):
-    """Описание записи в блоге"""
+    """Полное описание выбранной записи."""
     template = 'blog/detail.html'
-    post = get_object_or_404(some_posts(Post.objects), pk=post_id)
-    if request.user != post.author:
-        post = get_object_or_404(some_posts(Post.objects), id=post_id)
-    comments = post.comments.order_by('created_at')
+    posts = get_object_or_404(Post, id=post_id)
+    if request.user != posts.author:
+        posts = get_object_or_404(some_posts(Post.objects), id=post_id)
+    comments = posts.comments.order_by('created_at')
     form = CommentForm()
-    context = {'post': post, 'form': form, 'comments': comments}
+    context = {'post': posts, 'form': form, 'comments': comments}
     return render(request, template, context)
 
 

@@ -56,7 +56,6 @@ class Post(PublishedModel):
     image = models.ImageField(
         verbose_name='Изображение',
         upload_to='images',
-        null=True,
         blank=True
     )
     pub_date = models.DateTimeField(
@@ -91,9 +90,8 @@ class Post(PublishedModel):
         verbose_name_plural = 'Публикации'
         ordering = ['-pub_date']
 
-    def __str__(self) -> str:
-        title = str(self.title)
-        return title
+    def __str__(self):
+        return self.title
 
 
 class Profile(models.Model):
@@ -133,4 +131,4 @@ class Comment(PublishedModel):
 
     def __str__(self) -> str:
         text = str(self.text)
-        return text[:20]
+        return text
