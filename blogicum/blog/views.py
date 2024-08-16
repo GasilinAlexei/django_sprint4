@@ -8,6 +8,9 @@ from .models import Post, Category, Comment, User
 from .forms import PostForm, ProfileEditForm, CommentForm
 
 
+NUM_POSTS_INDEX = 10
+
+
 def some_posts(post_objects):
     """Посты из БД"""
     return post_objects.filter(
@@ -17,9 +20,9 @@ def some_posts(post_objects):
     ).annotate(comment_count=Count('comments'))
 
 
-def get_paginator(request, items, num=10):
+def get_paginator(request, items, num_items_per_page=NUM_POSTS_INDEX):
     """Создает объект пагинации."""
-    paginator = Paginator(items, num)
+    paginator = Paginator(items, num_items_per_page)
     num_pages = request.GET.get('page')
     return paginator.get_page(num_pages)
 
@@ -113,7 +116,7 @@ def edit_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.user != post.author:
         return redirect('blog:post_detail', post_id)
-    if request.method == "POST":
+    if request.method == 'POST':
         form = PostForm(
             request.POST, files=request.FILES or None, instance=post)
         if form.is_valid():
@@ -162,7 +165,7 @@ def edit_comment(request, post_id, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
     if request.user != comment.author:
         return redirect('blog:post_detail', post_id)
-    if request.method == "POST":
+    if request.method == 'POST':
         form = CommentForm(request.POST or None, instance=comment)
         if form.is_valid():
             form.save()
@@ -180,7 +183,7 @@ def delete_comment(request, post_id, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
     if request.user != comment.author:
         return redirect('blog:post_detail', post_id)
-    if request.method == "POST":
+    if request.method == 'POST':
         comment.delete()
         return redirect('blog:post_detail', post_id)
     context = {'comment': comment}

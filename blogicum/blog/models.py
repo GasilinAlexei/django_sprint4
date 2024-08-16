@@ -48,6 +48,8 @@ class Location(PublishedModel):
 
 
 class Post(PublishedModel):
+    """Публикация"""
+
     title = models.CharField(
         verbose_name='Заголовок',
         max_length=256
@@ -95,6 +97,8 @@ class Post(PublishedModel):
 
 
 class Profile(models.Model):
+    """Профиль"""
+
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -105,6 +109,7 @@ class Profile(models.Model):
 
 
 class Comment(PublishedModel):
+    """Комментарии"""
 
     text = models.TextField(verbose_name='Текст')
     author = models.ForeignKey(
@@ -129,6 +134,5 @@ class Comment(PublishedModel):
         verbose_name_plural = 'Комментарий'
         ordering = ('created_at',)
 
-    def __str__(self) -> str:
-        text = str(self.text)
-        return text
+    def __str__(self):
+        return self.title
